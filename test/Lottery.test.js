@@ -103,5 +103,8 @@ describe("Lottery", () => {
     const difference = finalBalance - initialBalance;
 
     assert(difference > web3.utils.toWei("1.8", "ether"));
+
+    //TODO:rudijs assert players array is empty now
+    //TODO:rudijs assert contract balance is zero after pickWinner()
   });
 });
