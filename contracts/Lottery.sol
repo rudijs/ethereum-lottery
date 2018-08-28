@@ -1,4 +1,4 @@
-pragma solidity ^0.4.17;
+pragma solidity ^0.4.24;
 
 contract Lottery {
     address public manager;
@@ -9,7 +9,7 @@ contract Lottery {
     }
 
     function enter() public payable {
-        require(msg.value > .01 ether);
+        require(msg.value > .01 ether, "Required minimum of 0.01 ether");
 
         players.push(msg.sender);
     }
@@ -20,12 +20,17 @@ contract Lottery {
     
     function pickWinner() public restricted {
         uint index = random() % players.length;
-        players[index].transfer(this.balance);
+        // players[index].transfer(this.balance);
+        players[index].transfer(address(this).balance);
         players = new address[](0);
     }
 
+    function getPlayers() public view returns(address[]) {
+        return players;
+    }
+
     modifier restricted() {
-        require(msg.sender == manager);
+        require(msg.sender == manager, "Restricted manager access only.");
         _;
     }
 }
